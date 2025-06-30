@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Free online tools for PDF and image optimization. Compress, convert, edit and protect documents and images with our all-in-one toolkit.">
+    <meta name="keywords"
+        content="PDF tools, image compressor, merge PDF, split PDF, compress PDF, PDF to Word, edit PDF, image optimization">
+    <meta name="author" content="FileToolsPro">
+    <meta property="og:title" content="Free PDF & Image Tools | All-in-One File Optimization Toolkit">
+    <meta property="og:description"
+        content="Free online tools for PDF and image optimization. Compress, convert, edit and protect documents and images.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://filetoolspro.com">
+    <meta property="og:image" content="https://filetoolspro.com/preview.jpg">
+    <title>Free PDF & Image Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script
+        src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.0/dist/browser-image-compression.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        .dark {
+            --tw-bg-opacity: 1;
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity));
+            color: white;
+        }
+
+        .tool-card {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-card {
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #2563eb;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .active-nav::after {
+            width: 100%;
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            margin-right: 1rem;
+        }
+
+        .tool-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .upload-label:hover {
+            border-color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+
+        .dark .upload-label:hover {
+            border-color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .file-list-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .file-list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .file-list-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .file-list-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        .dark .file-list-container::-webkit-scrollbar-track {
+            background: #334155;
+        }
+
+        .dark .file-list-container::-webkit-scrollbar-thumb {
+            background: #64748b;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            color: #2563eb;
+            border-bottom: 2px solid #2563eb;
+        }
+
+        .dark .tab-button.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="#" class="text-2xl font-bold text-slate-800 dark:text-white mr-10">
+                    <span class="gradient-text">Free</span>All-in-One Tools
+                </a>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#" class="nav-link active-nav text-blue-600 dark:text-blue-400 font-medium">Home</a>
+                    <a href="#tools"
+                        class="nav-link text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Tools</a>
+                    <a href="#features"
+                        class="nav-link text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Features</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-slate-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800 dark:text-yellow-300"
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path id="darkModeIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-16 md:py-24">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold text-slate-800 dark:text-white mb-6">
+                        <span class="gradient-text">Free</span>All-in-One Tools
+                    </h1>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
+                        Optimize PDFs and images with our collection of powerful free tools.
+                        No installation needed - everything works right in your browser.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                        <a href="#tools"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg text-center">
+                            Explore Tools
+                        </a>
+                        <a href="./image-compressor.html"
+                            class="bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 font-medium py-3 px-6 rounded-lg text-center">
+                            Compress Images
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <img src="https://images.unsplash.com/photo-1542435503-956c469947f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
+                        alt="File Tools Pro"
+                        class="rounded-xl shadow-xl w-full h-auto border border-gray-200 dark:border-slate-700">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Navigation -->
+    <section id="tools" class="py-8 bg-gray-50 dark:bg-slate-800/50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center space-x-4 border-b border-gray-200 dark:border-slate-700">
+                <button data-tab="pdf-tools"
+                    class="tab-button active px-4 py-2 font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                    PDF Tools
+                </button>
+
+
+                <button data-tab="image-compressor"
+                    class="tab-button px-4 py-2 font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"><a
+                        href="./image-compressor.html" </a>
+
+                        Image Compressor
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PDF Tools Section -->
+    <section id="pdf-tools" class="tab-content active py-8 bg-gray-50 dark:bg-slate-800/50">
+        <div class="container mx-auto px-4">
+            <!-- Organize PDF Category -->
+            <div
+                class="category-card bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 mb-8 border border-gray-100 dark:border-slate-700">
+                <div class="flex items-center mb-6">
+                    <div class="category-icon bg-blue-50 dark:bg-slate-700 text-blue-600 dark:text-blue-400">
+                        <i class="fas fa-folder-open text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 dark:text-white">Organize PDF</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Merge PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                            <i class="fas fa-object-group"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Merge PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Combine multiple PDFs into one document
+                            </p>
+                        </div>
+                    </a>
+
+                    <!-- Split PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+                            <i class="fas fa-cut"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Split PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Divide a PDF into separate documents</p>
+                        </div>
+                    </a>
+
+                    <!-- Remove pages -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">
+                            <i class="fas fa-minus-circle"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Remove pages</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Delete unwanted pages from your PDF</p>
+                        </div>
+                    </a>
+
+                    <!-- Extract pages -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
+                            <i class="fas fa-file-export"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Extract pages</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Select specific pages to save as new PDF
+                            </p>
+                        </div>
+                    </a>
+
+                    <!-- Organize PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400">
+                            <i class="fas fa-sort-alpha-down"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Organize PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Rearrange pages in your document</p>
+                        </div>
+                    </a>
+
+                    <!-- Scan to PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+                            <i class="fas fa-scanner"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Scan to PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Create PDFs from scanned documents</p>
+                        </div>
+                    </a>
+
+                    <!-- Optimize PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Optimize PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Improve PDF quality and performance</p>
+                        </div>
+                    </a>
+
+                    <!-- Compress PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                            <i class="fas fa-compress-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Compress PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Reduce PDF file size without quality
+                                loss</p>
+                        </div>
+                    </a>
+
+                    <!-- Repair PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+                            <i class="fas fa-wrench"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Repair PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Fix corrupted or damaged PDF files</p>
+                        </div>
+                    </a>
+
+                    <!-- OCR PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
+                            <i class="fas fa-text-height"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">OCR PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Make scanned PDFs searchable and
+                                editable</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Convert to PDF Category -->
+            <div
+                class="category-card bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 mb-8 border border-gray-100 dark:border-slate-700">
+                <div class="flex items-center mb-6">
+                    <div class="category-icon bg-green-50 dark:bg-slate-700 text-green-600 dark:text-green-400">
+                        <i class="fas fa-file-import text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 dark:text-white">Convert to PDF</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- JPG to PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">JPG to PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Convert images to PDF documents</p>
+                        </div>
+                    </a>
+
+                    <!-- WORD to PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                            <i class="fas fa-file-word"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">WORD to PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Convert DOC/DOCX files to PDF</p>
+                        </div>
+                    </a>
+
+                    <!-- POWERPOINT to PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
+                            <i class="fas fa-file-powerpoint"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">POWERPOINT to PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Convert PPT/PPTX files to PDF</p>
+                        </div>
+                    </a>
+
+                    <!-- EXCEL to PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+                            <i class="fas fa-file-excel"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">EXCEL to PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Convert XLS/XLSX files to PDF</p>
+                        </div>
+                    </a>
+
+                    <!-- HTML to PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">HTML to PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Convert web pages to PDF documents</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Convert from PDF Category -->
+            <div
+                class="category-card bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 mb-8 border border-gray-100 dark:border-slate-700">
+                <div class="flex items-center mb-6">
+                    <div class="category-icon bg-purple-50 dark:bg-slate-700 text-purple-600 dark:text-purple-400">
+                        <i class="fas fa-file-export text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 dark:text-white">Convert from PDF</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- PDF to JPG -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">PDF to JPG</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Convert PDF pages to JPG images</p>
+                        </div>
+                    </a>
+
+                    <!-- PDF to WORD -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                            <i class="fas fa-file-word"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">PDF to WORD</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Convert PDF to editable DOC/DOCX</p>
+                        </div>
+                    </a>
+
+                    <!-- PDF to POWERPOINT -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
+                            <i class="fas fa-file-powerpoint"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">PDF to POWERPOINT</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Convert PDF to editable PPT/PPTX</p>
+                        </div>
+                    </a>
+
+                    <!-- PDF to EXCEL -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+                            <i class="fas fa-file-excel"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">PDF to EXCEL</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Convert PDF to editable XLS/XLSX</p>
+                        </div>
+                    </a>
+
+                    <!-- PDF to PDF/A -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+                            <i class="fas fa-file-archive"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">PDF to PDF/A</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Convert to archival PDF format</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Edit PDF Category -->
+            <div
+                class="category-card bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 mb-8 border border-gray-100 dark:border-slate-700">
+                <div class="flex items-center mb-6">
+                    <div class="category-icon bg-yellow-50 dark:bg-slate-700 text-yellow-600 dark:text-yellow-400">
+                        <i class="fas fa-edit text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 dark:text-white">Edit PDF</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Rotate PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                            <i class="fas fa-redo"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Rotate PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Rotate pages in your PDF document</p>
+                        </div>
+                    </a>
+
+                    <!-- Add page numbers -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
+                            <i class="fas fa-list-ol"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Add page numbers</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Insert numbered pages to your PDF</p>
+                        </div>
+                    </a>
+
+                    <!-- Add watermark -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+                            <i class="fas fa-stamp"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Add watermark</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Add text or image watermarks</p>
+                        </div>
+                    </a>
+
+                    <!-- Crop PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">
+                            <i class="fas fa-crop"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Crop PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Adjust margins and crop PDF pages</p>
+                        </div>
+                    </a>
+
+                    <!-- Edit PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400">
+                            <i class="fas fa-pen"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Edit PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Modify text and images in PDF</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PDF Security Category -->
+            <div
+                class="category-card bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-700">
+                <div class="flex items-center mb-6">
+                    <div class="category-icon bg-red-50 dark:bg-slate-700 text-red-600 dark:text-red-400">
+                        <i class="fas fa-lock text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 dark:text-white">PDF Security</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Unlock PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+                            <i class="fas fa-unlock"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Unlock PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Remove password protection</p>
+                        </div>
+                    </a>
+
+                    <!-- Protect PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Protect PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Add password security to PDF</p>
+                        </div>
+                    </a>
+
+                    <!-- Sign PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
+                            <i class="fas fa-signature"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Sign PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Add digital signatures to documents</p>
+                        </div>
+                    </a>
+
+                    <!-- Redact PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">
+                            <i class="fas fa-eye-slash"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Redact PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Permanently remove sensitive information
+                            </p>
+                        </div>
+                    </a>
+
+                    <!-- Compare PDF -->
+                    <a href="#"
+                        class="tool-card flex items-center p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <div class="tool-icon bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+                            <i class="fas fa-code-branch"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-800 dark:text-white">Compare PDF</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Find differences between two PDFs</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Compressor Section -->
+    <section id="image-compressor" class="tab-content py-8 bg-gray-50 dark:bg-slate-800/50">
+        <div class="container mx-auto px-4">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6
