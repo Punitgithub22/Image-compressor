@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Compress images online for free. Optimize JPG, PNG, and WebP to reduce file size without quality loss. Boost website speed and SEO with fast image compression.Free online tool to compress JPG, PNG, and WebP images while maintaining quality. Reduce image file size for faster websites.">
+    <meta name="keywords"
+        content="image compressor, reduce image size, optimize images, jpg compressor, png compressor, webp converter">
+    <meta name="author" content="ImageCompressorPro">
+    <meta property="og:title" content="Compress Images Online | Free Image Size Reducer Tool">
+    <meta property="og:description" content="Free image compressor for websites, blogs, and SEO. Optimize JPG, PNG, WebP in seconds with zero quality loss. No signup required.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com">
+    <meta property="og:image" content="https://yourdomain.com/preview.jpg">
+    <title>Bulk Image Compressor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.0/dist/browser-image-compression.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        .dark {
+            --tw-bg-opacity: 1;
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity));
+            color: white;
+        }
+
+        .upload-label:hover {
+            border-color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+
+        .dark .upload-label:hover {
+            border-color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .file-list-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .file-list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .file-list-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .file-list-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        .dark .file-list-container::-webkit-scrollbar-track {
+            background: #334155;
+        }
+
+        .dark .file-list-container::-webkit-scrollbar-thumb {
+            background: #64748b;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
+    <header class="container mx-auto px-4 py-6 flex justify-between items-center">
+        <h1 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">
+            <span class="text-blue-600">Bulk</span>ImageCompressor
+        </h1>
+        <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-slate-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800 dark:text-yellow-300" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path id="darkModeIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+        </button>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <div class="flex-1">
+                <section class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 mb-8">
+                    <h2 class="text-xl font-semibold mb-4 text-slate-800 dark:text-white">Bulk Compress Images</h2>
+
+                    <div class="mb-6">
+                        <input type="file" id="imageUpload" accept="image/jpeg, image/png, image/webp" multiple
+                            class="hidden">
+                        <label for="imageUpload"
+                            class="flex flex-col items-center justify-center p-8 border-2 border-dashed border-gray-300 dark:border-slate-600 rounded-lg cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-slate-500"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <p class="mt-2 text-gray-600 dark:text-slate-400">Click to upload images</p>
+                            <p class="text-sm text-gray-500 dark:text-slate-500">Supports: JPG, PNG, WebP (Max 20 files)
+                            </p>
+                        </label>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="compressionLevel"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Compression
+                            Level</label>
+                        <div class="flex items-center gap-4">
+                            <input type="range" id="compressionLevel" min="0" max="1" step="0.1" value="0.7"
+                                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                            <span id="compressionValue"
+                                class="text-sm font-medium text-gray-700 dark:text-gray-300">70%</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            <span>Low (smaller file)</span>
+                            <span>High (better quality)</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="outputFormat"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Output
+                            Format</label>
+                        <select id="outputFormat"
+                            class="bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-gray-400 dark:text-white">
+                            <option value="original">Keep original format</option>
+                            <option value="jpeg">JPEG</option>
+                            <option value="png">PNG</option>
+                            <option value="webp">WebP</option>
+                        </select>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button id="compressBtn"
+                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled>
+                            Compress All Images
+                        </button>
+                        <button id="downloadAllBtn"
+                            class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled>
+                            Download All
+                        </button>
+                    </div>
+                </section>
+
+                <section id="resultsSection" class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-slate-800 dark:text-white">Files to Compress</h2>
+                        <span id="fileCount" class="text-sm text-gray-500 dark:text-gray-400">0 files selected</span>
+                    </div>
+
+                    <div id="fileListContainer" class="file-list-container mb-6">
+                        <div id="fileList" class="space-y-3">
+                            <div class="text-center py-8 text-gray-500 dark:text-gray-400" id="emptyState">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-2" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                                </svg>
+                                <p>No files selected yet</p>
+                                <p class="text-sm">Upload images to get started</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-slate-700/30 rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-medium text-blue-800 dark:text-blue-200">Total Savings</span>
+                            <span id="totalSavings" class="text-sm font-medium text-blue-800 dark:text-blue-200">0% (0
+                                KB)</span>
+                        </div>
+                        <div class="w-full bg-blue-200 dark:bg-slate-600 rounded-full h-2.5">
+                            <div id="totalProgressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const darkModeIcon = document.getElementById('darkModeIcon');
+        const html = document.documentElement;
+
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('darkMode', isDark ? 'dark' : 'light');
+            darkModeIcon.setAttribute('d', isDark ?
+                'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z' :
+                'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z');
+        });
+
+        // Set initial dark mode
+        if (localStorage.getItem('darkMode') === 'dark' ||
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            darkModeIcon.setAttribute('d', 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z');
+        }
+
+        // Image compression functionality
+        const imageUpload = document.getElementById('imageUpload');
+        const compressionLevel = document.getElementById('compressionLevel');
+        const compressionValue = document.getElementById('compressionValue');
+        const outputFormat = document.getElementById('outputFormat');
+        const compressBtn = document.getElementById('compressBtn');
+        const downloadAllBtn = document.getElementById('downloadAllBtn');
+        const fileList = document.getElementById('fileList');
+        const emptyState = document.getElementById('emptyState');
+        const fileCount = document.getElementById('fileCount');
+        const totalProgressBar = document.getElementById('totalProgressBar');
+        const totalSavings = document.getElementById('totalSavings');
+
+        let files = [];
+        let compressedFiles = [];
+        let totalOriginalSize = 0;
+        let totalCompressedSize = 0;
+
+        // Update compression value display
+        compressionLevel.addEventListener('input', () => {
+            const value = Math.round(compressionLevel.value * 100);
+            compressionValue.textContent = `${value}%`;
+        });
+
+        // Handle image upload
+        imageUpload.addEventListener('change', (e) => {
+            files = Array.from(e.target.files).slice(0, 20); // Limit to 20 files
+
+            if (files.length === 0) return;
+
+            // Reset totals
+            totalOriginalSize = 0;
+            totalCompressedSize = 0;
+            compressedFiles = [];
+
+            // Clear previous files
+            fileList.innerHTML = '';
+            emptyState.classList.add('hidden');
+
+            // Process each file
+            files.forEach((file, index) => {
+                if (!file.type.match('image.*')) return;
+
+                totalOriginalSize += file.size;
+
+                const fileItem = document.createElement('div');
+                fileItem.className = 'bg-gray-50 dark:bg-slate-700/50 rounded-lg p-3';
+                fileItem.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center truncate">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">${file.name}</span>
+                        </div>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">${formatFileSize(file.size)}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="w-full bg-gray-200 dark:bg-slate-600 rounded-full h-2 mr-2">
+                            <div id="progress-${index}" class="bg-blue-600 h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <div>
+                            <span id="status-${index}" class="text-xs text-gray-500 dark:text-gray-400">Pending</span>
+                        </div>
+                    </div>
+                    <div class="mt-1 flex justify-between">
+                        <span id="result-${index}" class="text-xs text-gray-500 dark:text-gray-400"></span>
+                        <button id="download-${index}" class="text-xs text-blue-600 dark:text-blue-400 hover:underline hidden">Download</button>
+                    </div>
+                `;
+                fileList.appendChild(fileItem);
+            });
+
+            fileCount.textContent = `${files.length} file${files.length > 1 ? 's' : ''} selected`;
+            compressBtn.disabled = false;
+            downloadAllBtn.disabled = true;
+
+            // Update total size display
+            totalSavings.textContent = `0% (0 KB)`;
+            totalProgressBar.style.width = '0%';
+        });
+
+        // Compress all images
+        compressBtn.addEventListener('click', async () => {
+            if (files.length === 0) return;
+
+            compressBtn.disabled = true;
+            compressBtn.textContent = 'Compressing...';
+            downloadAllBtn.disabled = true;
+            totalCompressedSize = 0;
+
+            // Process files sequentially
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.match('image.*')) continue;
+
+                try {
+                    // Update status
+                    document.getElementById(`status-${i}`).textContent = 'Processing...';
+                    document.getElementById(`progress-${i}`).style.width = '50%';
+
+                    const options = {
+                        maxSizeMB: parseFloat(compressionLevel.value),
+                        maxWidthOrHeight: 1920,
+                        useWebWorker: true,
+                        fileType: outputFormat.value === 'original' ? undefined : outputFormat.value
+                    };
+
+                    const compressedFile = await imageCompression(file, options);
+
+                    // Calculate savings
+                    const originalSize = file.size;
+                    const compressedSize = compressedFile.size;
+                    const savings = ((originalSize - compressedSize) / originalSize) * 100;
+
+                    // Update UI
+                    document.getElementById(`progress-${i}`).style.width = '100%';
+                    document.getElementById(`status-${i}`).textContent = 'Done';
+                    document.getElementById(`result-${i}`).textContent = `Saved ${Math.round(savings)}% (${formatFileSize(originalSize - compressedSize)})`;
+
+                    // Add download button for individual file
+                    const downloadBtn = document.getElementById(`download-${i}`);
+                    downloadBtn.classList.remove('hidden');
+                    downloadBtn.addEventListener('click', () => {
+                        downloadFile(compressedFile, file.name);
+                    });
+
+                    // Store compressed file
+                    compressedFiles.push({
+                        file: compressedFile,
+                        originalName: file.name,
+                        savings: savings
+                    });
+
+                    totalCompressedSize += compressedSize;
+
+                    // Update total progress
+                    const totalProgress = ((i + 1) / files.length) * 100;
+                    totalProgressBar.style.width = `${totalProgress}%`;
+
+                    // Update total savings
+                    const totalSavingsPercentage = ((totalOriginalSize - totalCompressedSize) / totalOriginalSize) * 100;
+                    totalSavings.textContent = `${Math.round(totalSavingsPercentage)}% (${formatFileSize(totalOriginalSize - totalCompressedSize)})`;
+
+                } catch (error) {
+                    console.error('Error compressing file:', file.name, error);
+                    document.getElementById(`status-${i}`).textContent = 'Error';
+                    document.getElementById(`progress-${i}`).style.backgroundColor = '#ef4444';
+                    document.getElementById(`result-${i}`).textContent = 'Compression failed';
+                }
+            }
+
+            compressBtn.textContent = 'Compress All Images';
+            downloadAllBtn.disabled = false;
+        });
+
+        // Download all compressed images as ZIP
+        downloadAllBtn.addEventListener('click', async () => {
+            if (compressedFiles.length === 0) return;
+
+            try {
+                const zip = new JSZip();
+
+                // Add files to zip
+                compressedFiles.forEach((item) => {
+                    const originalName = item.originalName;
+                    const dotIndex = originalName.lastIndexOf('.');
+                    let name = originalName.substring(0, dotIndex);
+                    let ext = originalName.substring(dotIndex + 1);
+
+                    if (outputFormat.value !== 'original') {
+                        ext = outputFormat.value;
+                    }
+
+                    const newName = `${name}-compressed.${ext}`;
+                    zip.file(newName, item.file);
+                });
+
+                // Generate zip file
+                const content = await zip.generateAsync({ type: 'blob' });
+
+                // Download zip
+                const url = URL.createObjectURL(content);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'compressed-images.zip';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+            } catch (error) {
+                console.error('Error creating ZIP:', error);
+                alert('Failed to create ZIP file. Please try again.');
+            }
+        });
+
+        // Helper function to download individual file
+        function downloadFile(file, originalName) {
+            const dotIndex = originalName.lastIndexOf('.');
+            let name = originalName.substring(0, dotIndex);
+            let ext = originalName.substring(dotIndex + 1);
+
+            if (outputFormat.value !== 'original') {
+                ext = outputFormat.value;
+            }
+
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(file);
+            a.download = `${name}-compressed.${ext}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+        }
+
+        // Helper function to format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
+</body>
+
+</html>
+  
